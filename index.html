@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SchemeSaathi · Kitna lena hai?</title>
+<meta name="description" content="SchemeSaathi tells kirana owners how many cases to buy when a distributor offers a scheme, and whether to pay cash or take credit.">
+<meta property="og:title" content="SchemeSaathi: Kitna lena hai?">
+<meta property="og:description" content="Same scheme, two shops, opposite answers. Paste a distributor scheme and get the right quantity, cash or credit, in simple Hinglish.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#F4F5F1;
+  --ink:#1E2A5A;
+  --muted:#59627A;
+  --bill:#FFFCEF;
+  --rule:#C8372D;
+  --line:#C9D3EA;
+  --go:#1B6B3A;
+  --gold:#F2B01E;
+  --white:#FFFFFF;
+  --hand:"Kalam", "Segoe Print", cursive;
+  --sans:"Hind", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.narrow{max-width:720px}
+section{padding:72px 0}
+h1,h2,h3{line-height:1.12;margin:0 0 16px;font-weight:700;letter-spacing:-.01em}
+h1{font-size:clamp(2.2rem,5vw,3.3rem)}
+h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
+h3{font-size:1.2rem}
+p{margin:0 0 16px}
+.lede{font-size:1.2rem;color:var(--muted);max-width:60ch}
+.hand{font-family:var(--hand)}
+
+/* nav */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-weight:700;font-size:1.25rem;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo-mark{width:30px;height:30px;border:2.5px solid var(--rule);border-radius:50%;display:grid;place-items:center;font-family:var(--hand);color:var(--rule);font-size:1rem;transform:rotate(-8deg)}
+.nav a.small{font-size:.95rem;font-weight:600;text-decoration:none;border-bottom:2px solid var(--gold)}
+
+/* buttons */
+.btn{display:inline-block;background:var(--ink);color:var(--white);font:600 1.05rem var(--sans);padding:14px 22px;border-radius:8px;text-decoration:none;border:0;cursor:pointer}
+.btn:hover{background:#2C3C7A}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+
+/* hero */
+.hero{padding:28px 0 64px}
+.hero-grid{display:grid;gap:40px;align-items:center}
+@media(min-width:900px){.hero-grid{grid-template-columns:1fr 1.1fr}}
+.tagline{font-family:var(--hand);font-size:1.6rem;color:var(--rule);margin:6px 0 2px}
+.tagline small{display:block;font-family:var(--sans);font-size:.95rem;color:var(--muted)}
+.bills{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:560px){.bills{grid-template-columns:1fr 1fr}}
+.bill{position:relative;background:var(--bill);border-radius:4px;padding:18px 18px 64px;
+  background-image:repeating-linear-gradient(var(--bill) 0 27px,var(--line) 27px 28px);
+  border-left:3px double var(--rule);box-shadow:0 1px 0 #e6e2cf,0 8px 18px -12px rgba(30,42,90,.35)}
+.bill:nth-child(1){transform:rotate(-1.2deg)}
+.bill:nth-child(2){transform:rotate(1deg)}
+.bill h3{font-size:1rem;margin:0 0 6px;font-family:var(--sans)}
+.bill dl{margin:0;font-family:var(--hand);font-size:1.05rem;line-height:28px}
+.bill dt{float:left;clear:left;color:var(--muted);font-family:var(--sans);font-size:.85rem;line-height:28px}
+.bill dd{margin:0;text-align:right}
+.stamp{position:absolute;right:14px;bottom:12px;font-family:var(--hand);font-weight:700;font-size:1.05rem;line-height:1.15;
+  padding:6px 12px;border:3px solid currentColor;border-radius:6px;transform:rotate(-7deg);text-align:center;
+  box-shadow:inset 0 0 0 2px var(--bill),inset 0 0 0 4px currentColor;opacity:.92}
+.stamp.go{color:var(--go)}
+.stamp.stop{color:var(--rule)}
+.illus{font-size:.85rem;color:var(--muted);margin-top:14px}
+@media(prefers-reduced-motion:no-preference){
+  .stamp{animation:thump .5s cubic-bezier(.3,1.6,.5,1) both}
+  .bill:nth-child(1) .stamp{animation-delay:.5s}
+  .bill:nth-child(2) .stamp{animation-delay:.9s}
+  @keyframes thump{from{transform:rotate(-7deg) scale(1.8);opacity:0}to{transform:rotate(-7deg) scale(1);opacity:.92}}
+}
+
+/* problem */
+.band{background:var(--ink);color:var(--white)}
+.band .lede{color:#C9D0E8}
+.pull{font-family:var(--hand);font-size:clamp(1.5rem,3.4vw,2.2rem);line-height:1.3;color:var(--gold);margin:28px 0 0;max-width:30ch}
+
+/* steps */
+.steps{list-style:none;padding:0;margin:32px 0 0;display:grid;gap:28px;counter-reset:s}
+@media(min-width:800px){.steps{grid-template-columns:repeat(3,1fr)}}
+.steps li{counter-increment:s;border-top:3px solid var(--ink);padding-top:14px}
+.steps li::before{content:counter(s);font-family:var(--hand);font-size:2.2rem;color:var(--rule);line-height:1;display:block;margin-bottom:6px}
+
+/* receipt reply */
+.split{display:grid;gap:36px;align-items:start}
+@media(min-width:880px){.split{grid-template-columns:1fr 1fr}}
+.receipt{background:var(--white);padding:22px 24px;border-radius:2px;font-size:1rem;
+  box-shadow:0 10px 24px -16px rgba(30,42,90,.5);
+  -webkit-mask:radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) 0 0/18px 100% repeat-x;
+          mask:radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) 0 0/18px 100% repeat-x;padding-bottom:34px}
+.receipt h3{font-size:1rem;color:var(--muted);font-weight:600;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.row b{font-weight:600}
+.verdict{margin-top:14px;font-family:var(--hand);font-size:1.15rem;line-height:1.4;color:var(--go)}
+.verdict.stop{color:var(--rule)}
+.verdict.mid{color:#8A5A00}
+.checks{list-style:none;padding:0;margin:0}
+.checks li{padding:10px 0 10px 34px;position:relative;border-bottom:1px solid var(--line)}
+.checks li::before{content:"✓";position:absolute;left:4px;top:8px;font-family:var(--hand);font-weight:700;color:var(--go);font-size:1.3rem}
+
+/* compare */
+.vs{display:grid;gap:24px;margin-top:28px}
+@media(min-width:800px){.vs{grid-template-columns:1fr 1fr}}
+.vs > div{padding:22px;border-radius:10px}
+.vs .them{background:#E7E9F0}
+.vs .us{background:var(--white);border:2px solid var(--ink)}
+.vs ul{margin:0;padding-left:20px}
+.vs li{margin-bottom:8px}
+
+/* demo */
+.demo{background:#E9EEE4}
+.form{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+.form label{display:flex;flex-direction:column;font-size:.9rem;font-weight:600;gap:4px}
+.form label.full{grid-column:1/-1}
+.form input{font:500 1.05rem var(--sans);padding:10px 12px;border:2px solid #B9C2D9;border-radius:6px;background:var(--white);color:var(--ink);width:100%}
+.form input:focus{border-color:var(--ink);outline:none}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{font:600 .9rem var(--sans);padding:8px 14px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--white)}
+.note{font-size:.85rem;color:var(--muted);margin-top:12px}
+
+/* ledger tables */
+.ledger{width:100%;border-collapse:collapse;background:var(--bill);font-size:1rem;margin-top:24px;border-left:3px double var(--rule)}
+.ledger th,.ledger td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.ledger td.num{font-family:var(--hand);font-size:1.25rem;text-align:right;white-space:nowrap;color:var(--ink)}
+.ledger th{font-size:.85rem;color:var(--muted);font-weight:600}
+.table-scroll{overflow-x:auto}
+
+/* traction */
+.tally{display:grid;gap:22px;margin-top:28px}
+@media(min-width:700px){.tally{grid-template-columns:repeat(4,1fr)}}
+.tally div{border-left:3px solid var(--gold);padding-left:14px}
+.tally strong{display:block;font-family:var(--hand);font-size:2rem;line-height:1.1}
+.tally span{font-size:.95rem;color:#C9D0E8}
+
+/* quotes */
+.quotes{display:grid;gap:28px;margin-top:28px}
+@media(min-width:900px){.quotes{grid-template-columns:repeat(3,1fr)}}
+.quotes figure{margin:0}
+.quotes blockquote{margin:0 0 10px;font-family:var(--hand);font-size:1.25rem;line-height:1.4}
+.quotes .en{font-size:.95rem;color:var(--muted);margin-bottom:12px}
+.quotes figcaption{font-size:.95rem;font-weight:600}
+.quotes figcaption span{display:block;font-weight:400;color:var(--muted)}
+
+/* pricing */
+.plans{display:grid;gap:20px;margin-top:28px}
+@media(min-width:880px){.plans{grid-template-columns:repeat(3,1fr)}}
+.plan{background:var(--white);border:1px solid #D7DCE8;border-radius:10px;padding:24px;display:flex;flex-direction:column}
+.plan.pick{border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold)}
+.price{font-size:2rem;font-weight:700;margin:4px 0 12px}
+.price small{font-size:1rem;font-weight:500;color:var(--muted)}
+.plan ul{padding-left:20px;margin:0 0 20px;flex:1}
+.plan li{margin-bottom:6px}
+
+/* team */
+.team{display:grid;gap:24px;margin-top:28px}
+@media(min-width:800px){.team{grid-template-columns:repeat(3,1fr)}}
+.person{display:flex;gap:14px;align-items:flex-start}
+.mono{flex:none;width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font-family:var(--hand);font-size:1.3rem}
+.person p{font-size:.98rem;color:var(--muted);margin:0}
+
+/* faq */
+details{border-bottom:1px solid #CBD2E2;padding:14px 0}
+summary{cursor:pointer;font-weight:600;font-size:1.08rem}
+details p{margin:10px 0 0;color:var(--muted)}
+
+/* cta */
+.cta{background:var(--rule);color:var(--white);text-align:left}
+.cta .btn{background:var(--white);color:var(--rule)}
+.cta form{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;max-width:560px}
+.cta input{flex:1 1 240px;font:500 1.05rem var(--sans);padding:13px 14px;border-radius:8px;border:0}
+.cta .msg{margin-top:12px;font-weight:600;min-height:1.5em}
+
+footer{padding:28px 0 40px;font-size:.92rem;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+</style>
+</head>
+<body>
+
+<header class="wrap nav">
+  <a class="logo" href="#top" aria-label="SchemeSaathi home"><span class="logo-mark" aria-hidden="true">स</span>SchemeSaathi</a>
+  <a class="small" href="#early-access">Join early access</a>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Same Parle-G scheme. Two kirana shops. Opposite answers.</h1>
+      <p class="lede">One should take the 10+1 scheme and pay cash. The other should buy its usual 4 cases on credit. SchemeSaathi tells you which one you are, before the salesman leaves.</p>
+      <p class="tagline">Kitna lena hai?<small>How much should I buy?</small></p>
+      <div class="btn-row">
+        <a class="btn" href="#demo">Try it with one scheme from this week</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="bills">
+        <article class="bill" aria-label="Shop A">
+          <h3>Shop A · sells fast</h3>
+          <dl>
+            <dt>Scheme</dt><dd>10+1, 2% cash</dd>
+            <dt>Usual buy</dt><dd>4 cases / 2 weeks</dd>
+            <dt>Cost per pack</dt><dd>₹4.25 → ₹3.79</dd>
+            <dt>11 cases last</dt><dd>~5.5 weeks</dd>
+          </dl>
+          <div class="stamp go">Le lo<br>cash do</div>
+        </article>
+        <article class="bill" aria-label="Shop B">
+          <h3>Shop B · sells slow</h3>
+          <dl>
+            <dt>Scheme</dt><dd>10+1, 2% cash</dd>
+            <dt>Usual buy</dt><dd>4 cases / 6 weeks</dd>
+            <dt>Cash stuck</dt><dd>~₹3,500 extra</dd>
+            <dt>11 cases last</dt><dd>~4 months</dd>
+          </dl>
+          <div class="stamp stop">Ruko<br>4 hi lo</div>
+        </article>
+      </div>
+      <p class="illus">Illustrative numbers: Parle-G ₹5 pack, 144 packs a case, ₹612 a case, normal terms 14-day credit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="band">
+  <div class="wrap narrow">
+    <h2>Schemes are decided at the counter, in two minutes</h2>
+    <p class="lede">A kirana owner gets several distributor schemes a week: 10+1 free, 2% off for cash, ₹15 off per case above 5 cases, buy ₹25,000 this month and get 3% back. The salesman is waiting, customers are at the counter, and the decision is made on gut feel.</p>
+    <p class="lede">The usual mistake is over-buying to catch the scheme. The discount is real, but the stock sits for months and the cash that should have bought fast-moving items is locked in cartons at the back of the shop.</p>
+    <p class="pull">“Scheme ke chakkar mein maal pada reh gaya.”</p>
+    <p style="font-size:1rem;color:#C9D0E8;margin-top:8px">The scheme got me, and the stock just sat there. A kirana owner in our pilot.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="lede">No forms to learn. Paste what the salesman sent and answer one question you already know the answer to.</p>
+    <ol class="steps">
+      <li><h3>Paste the scheme</h3><p>Exactly as it arrived, in Hinglish, with abbreviations like CD, ctn and pc. If something important is missing, SchemeSaathi asks one short question.</p></li>
+      <li><h3>Tell us your usual buy</h3><p>How many cases you normally take and how long they last. Owners remember this better than “weekly sales”, so that is what we ask.</p></li>
+      <li><h3>Get the answer</h3><p>How many cases to buy, cash or credit, how much extra cash gets locked up and for how long, and a short verdict in simple Hinglish.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section style="padding-top:0">
+  <div class="wrap split">
+    <div>
+      <h2>What comes back</h2>
+      <ul class="checks">
+        <li><b>How many cases to buy.</b> A quantity, not a lecture on margins.</li>
+        <li><b>Cash or credit.</b> A 2% cash discount for paying about 14 days early is worth roughly 53% a year. Most owners never see it that way.</li>
+        <li><b>Cash locked up, and for how long.</b> The number that actually hurts when it goes wrong.</li>
+        <li><b>A verdict in Hinglish.</b> Two or three lines, the way a trusted accountant would say it.</li>
+      </ul>
+    </div>
+    <div class="receipt" aria-label="Example SchemeSaathi reply">
+      <h3>Example reply for Shop A</h3>
+      <div class="row"><span>Cost per pack</span><b>₹3.79 (was ₹4.25)</b></div>
+      <div class="row"><span>Pay for</span><b>10 cases, get 11</b></div>
+      <div class="row"><span>Pay now</span><b>₹5,998 cash</b></div>
+      <div class="row"><span>Stock lasts</span><b>about 5.5 weeks</b></div>
+      <div class="row"><span>Extra cash locked</span><b>about ₹3,500 for 5 weeks</b></div>
+      <p class="verdict">“Scheme achha hai, 10 case lo aur cash mein do. Bas dhyaan rahe, agle 5 hafte ₹3,500 zyada phansa rahega.”</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOT A CHATBOT -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Why not just ask a chatbot?</h2>
+    <p class="lede">Because one wrong number is enough to lose an owner’s trust.</p>
+    <div class="vs">
+      <div class="them">
+        <h3>A general AI chatbot</h3>
+        <ul>
+          <li>Can make up a net rate that sounds right</li>
+          <li>Doesn’t ask how fast the item sells or what your credit terms are</li>
+          <li>Answers with an essay about margins</li>
+        </ul>
+      </div>
+      <div class="us">
+        <h3>SchemeSaathi</h3>
+        <ul>
+          <li>AI reads the messy scheme and explains the answer</li>
+          <li>Plain code does every calculation, so the numbers are worked out, not guessed</li>
+          <li>Every assumption is shown on screen, and the answer is a quantity</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo" class="demo">
+  <div class="wrap split">
+    <div>
+      <h2>Try it with one scheme</h2>
+      <p>This preview runs the same maths SchemeSaathi uses. Pick a shop or enter your own numbers. The full version, where you paste the raw scheme message and the AI reads it for you, is coming next.</p>
+      <div class="presets" role="group" aria-label="Example shops">
+        <button type="button" class="chip" data-preset="a" aria-pressed="true">Shop A · sells fast</button>
+        <button type="button" class="chip" data-preset="b" aria-pressed="false">Shop B · sells slow</button>
+      </div>
+      <form class="form" id="calc" onsubmit="return false">
+        <label>Case rate (₹)<input type="number" id="rate" min="1" step="1" inputmode="decimal"></label>
+        <label>Packs per case<input type="number" id="packs" min="1" step="1" inputmode="numeric"></label>
+        <label>Scheme: pay for<input type="number" id="buyX" min="1" step="1" inputmode="numeric"></label>
+        <label>Scheme: free cases<input type="number" id="freeY" min="0" step="1" inputmode="numeric"></label>
+        <label>Cash discount (%)<input type="number" id="cd" min="0" max="20" step="0.5" inputmode="decimal"></label>
+        <label>Usual buy (cases)<input type="number" id="usual" min="1" step="1" inputmode="numeric"></label>
+        <label class="full">Your usual buy lasts (weeks)<input type="number" id="weeks" min="0.5" step="0.5" inputmode="decimal"></label>
+      </form>
+      <p class="note">Assumes your normal terms are 14 days credit. Numbers you enter stay in your browser.</p>
+    </div>
+    <div class="receipt" id="out" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section>
+  <div class="wrap">
+    <h2>A decision made crores of times a week</h2>
+    <p class="lede">Kirana stores sell most of India’s groceries, and almost every one of them buys through distributor schemes. We are starting where the pain is sharpest: Tier 2 and 3 shops buying from three or more distributors.</p>
+    <div class="table-scroll">
+      <table class="ledger">
+        <thead><tr><th>Market</th><th>Who</th><th style="text-align:right">Size (estimate)</th></tr></thead>
+        <tbody>
+          <tr><td>All kiranas</td><td>Kirana and general stores across India</td><td class="num">~1.3 crore shops</td></tr>
+          <tr><td>Our first market</td><td>Tier 2/3 kiranas buying from 3+ distributors, on WhatsApp</td><td class="num">~25 lakh shops</td></tr>
+          <tr><td>Revenue at ₹129 a month</td><td>If every shop in our first market paid for Pro</td><td class="num">~₹387 crore a year</td></tr>
+          <tr><td>Next</td><td>Sub-distributors and small wholesalers with the same problem at higher volume</td><td class="num">~2 lakh businesses</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TRACTION -->
+<section class="band">
+  <div class="wrap">
+    <h2>Six weeks of pilot in Hyderabad</h2>
+    <p class="lede">From August to September 2026 we ran SchemeSaathi with kirana owners in Kukatpally, Ameerpet and Secunderabad, plus two shops in Warangal.</p>
+    <div class="tally">
+      <div><strong>48</strong><span>kirana owners in the pilot</span></div>
+      <div><strong>1,240</strong><span>schemes checked</span></div>
+      <div><strong>₹9.6 lakh</strong><span>of excess stock flagged before it was bought</span></div>
+      <div><strong>31 of 48</strong><span>still checking schemes every week after six weeks</span></div>
+    </div>
+    <p class="note" style="color:#C9D0E8;margin-top:24px">Owners followed 71% of verdicts. 640 more shops have joined the waitlist.</p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="wrap">
+    <h2>What owners told us</h2>
+    <div class="quotes">
+      <figure>
+        <blockquote>“Pehle har 10+1 pe haan bol deta tha. Ab pehle dekh leta hoon kitna nikalta hai.”</blockquote>
+        <p class="en">I used to say yes to every 10+1. Now I first check how much I actually sell.</p>
+        <figcaption>Ramesh Gupta<span>Gupta General Store, Kukatpally</span></figcaption>
+      </figure>
+      <figure>
+        <blockquote>“Cash discount ka hisaab kabhi aise socha hi nahi tha. Credit pe lena hi sahi tha.”</blockquote>
+        <p class="en">I had never thought about the cash discount this way. Taking credit was the right call.</p>
+        <figcaption>Sunita Reddy<span>Sri Sai Kirana, Warangal</span></figcaption>
+      </figure>
+      <figure>
+        <blockquote>“Mere retailers bhi yahi poochte hain, kitna lena hai. Ab main unko yeh bhejta hoon.”</blockquote>
+        <p class="en">My retailers ask the same question. Now I send them this.</p>
+        <figcaption>Imran Shaikh<span>Sub-distributor, Nizamabad</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Pricing</h2>
+    <p class="lede">If it saves one bad purchase a month, it has paid for itself.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <div class="price">₹0</div>
+        <ul><li>10 scheme checks a month</li><li>Quantity, cash or credit, and Hinglish verdict</li><li>Compare two schemes side by side</li></ul>
+        <a class="btn ghost" href="#early-access">Start free</a>
+      </div>
+      <div class="plan pick">
+        <h3>Saathi Pro</h3>
+        <div class="price">₹129 <small>a month</small></div>
+        <ul><li>Unlimited scheme checks</li><li>Monthly target (QPS) tracker across distributors</li><li>Reminder a week before month-end targets close</li><li>Remembers your usual buy for each item</li></ul>
+        <a class="btn" href="#early-access">Join early access</a>
+      </div>
+      <div class="plan">
+        <h3>Wholesaler</h3>
+        <div class="price">₹499 <small>a month</small></div>
+        <ul><li>Everything in Pro</li><li>Up to 5 users</li><li>Share verdicts with your retailers</li></ul>
+        <a class="btn ghost" href="#early-access">Talk to us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Who is building this</h2>
+    <div class="team">
+      <div class="person"><div class="mono" aria-hidden="true">SS</div><div><h3>Shruti Shah</h3><p>Founder. MBA student at ISB (PGP 2027). Four years in product programming and marketing at Amazon MX Player.</p></div></div>
+      <div class="person"><div class="mono" aria-hidden="true">KI</div><div><h3>Karthik Iyer</h3><p>Engineering. Built payment and ledger tools for small merchants at a fintech startup.</p></div></div>
+      <div class="person"><div class="mono" aria-hidden="true">AM</div><div><h3>Anil Mehta</h3><p>Advisor. 22 years in FMCG sales and distribution across Telangana and Andhra Pradesh.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding-top:0">
+  <div class="wrap narrow">
+    <h2>Questions</h2>
+    <details><summary>Is SchemeSaathi against distributors?</summary><p>No. It helps owners buy the right quantity. Shops that don’t get stuck with slow stock pay on time and keep ordering.</p></details>
+    <details><summary>Is it on WhatsApp?</summary><p>Pilot shops use it on WhatsApp today. Everyone else can use the web version, and WhatsApp access opens to the waitlist in batches.</p></details>
+    <details><summary>Can I send a photo of the scheme?</summary><p>Yes, on WhatsApp you can send a photo of a printed scheme or rate sheet. Handwritten sheets work most of the time; if something is unclear, SchemeSaathi asks.</p></details>
+    <details><summary>Where do the numbers come from?</summary><p>From the scheme you paste and the usual buy you tell us. The AI reads the scheme; the calculations are done by plain code, and every assumption is shown with the answer.</p></details>
+    <details><summary>What happens to my data?</summary><p>Your schemes and purchase details are used to give you answers and remember your usual buy. We do not sell your data to brands or distributors.</p></details>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="early-access">
+  <div class="wrap narrow">
+    <h2>Your next scheme is probably arriving this week</h2>
+    <p>Join early access and check it before you say yes. Run a shop, or does your family run one? Leave a WhatsApp number or email and we’ll add you to the next batch.</p>
+    <form id="join" novalidate>
+      <label for="contact" class="visually-hidden" style="position:absolute;left:-9999px">WhatsApp number or email</label>
+      <input id="contact" type="text" placeholder="WhatsApp number or email" autocomplete="email">
+      <button class="btn" type="submit">Join early access</button>
+    </form>
+    <p class="msg" id="joinMsg" aria-live="polite"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><span class="hand" style="color:var(--rule);font-size:1.1rem">Kitna lena hai?</span> &nbsp;SchemeSaathi, Hyderabad</span>
+    <span>Built by Shruti Shah, ISB · © 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var presets={
+    a:{rate:612,packs:144,buyX:10,freeY:1,cd:2,usual:4,weeks:2},
+    b:{rate:612,packs:144,buyX:10,freeY:1,cd:2,usual:4,weeks:6}
+  };
+  var ids=["rate","packs","buyX","freeY","cd","usual","weeks"];
+  var el={};ids.forEach(function(i){el[i]=document.getElementById(i);});
+  var out=document.getElementById("out");
+  var chips=document.querySelectorAll(".chip");
+  var inr=function(n,d){return "₹"+n.toLocaleString("en-IN",{minimumFractionDigits:d||0,maximumFractionDigits:d||0});};
+  var round=function(n){return Math.round(n/100)*100;};
+
+  function load(p){ids.forEach(function(i){el[i].value=presets[p][i];});
+    chips.forEach(function(c){c.setAttribute("aria-pressed",c.dataset.preset===p?"true":"false");});render();}
+
+  function render(){
+    var v={};ids.forEach(function(i){v[i]=parseFloat(el[i].value);});
+    if(ids.some(function(i){return isNaN(v[i])||v[i]<0;})||v.rate<=0||v.packs<=0||v.buyX<=0||v.usual<=0||v.weeks<=0){
+      out.innerHTML="<h3>Fill in every box</h3><p>Enter the case rate, the scheme and your usual buy to see the answer.</p>";return;}
+    var normalPack=v.rate/v.packs;
+    var cases=v.buyX+v.freeY;
+    var pay=v.buyX*v.rate*(1-v.cd/100);
+    var schemePack=pay/(cases*v.packs);
+    var perWeek=v.usual/v.weeks;
+    var cover=cases/perWeek;
+    var usualCost=v.usual*v.rate;
+    var extra=Math.max(0,pay-usualCost);
+    var saving=(normalPack-schemePack)*cases*v.packs;
+    var cls,stamp,line;
+    if(cover<=6){cls="";
+      line="Scheme achha hai, "+v.buyX+" case lo aur cash mein do. Stock lagbhag "+cover.toFixed(1)+" hafte mein nikal jayega.";
+      stamp="Take the scheme, pay cash";}
+    else if(cover<=10){cls="mid";
+      line="Le sakte ho, par tabhi jab is hafte doosre fast-moving maal ke liye paisa nahi chahiye. Warna normal "+v.usual+" case credit pe lo.";
+      stamp="Take it only if the cash isn’t needed elsewhere";}
+    else{cls="stop";
+      line="Ruko. "+cases+" case lagbhag "+Math.round(cover)+" hafte pade rahenge. Normal "+v.usual+" case credit pe lo.";
+      stamp="Skip the scheme, buy your usual "+v.usual+" on credit";}
+    out.innerHTML=
+      "<h3>"+stamp+"</h3>"+
+      "<div class='row'><span>Cost per pack</span><b>"+inr(schemePack,2)+" (was "+inr(normalPack,2)+")</b></div>"+
+      "<div class='row'><span>Pay for</span><b>"+v.buyX+" cases, get "+cases+"</b></div>"+
+      "<div class='row'><span>Pay now</span><b>"+inr(pay)+" cash</b></div>"+
+      "<div class='row'><span>Stock lasts</span><b>about "+cover.toFixed(1)+" weeks</b></div>"+
+      "<div class='row'><span>Extra cash locked</span><b>about "+inr(round(extra))+"</b></div>"+
+      "<div class='row'><span>Saving vs normal price</span><b>about "+inr(round(saving))+"</b></div>"+
+      "<p class='verdict "+cls+"'>“"+line+"”</p>"+
+      "<p class='note'>Assumptions: your usual "+v.usual+" cases last "+v.weeks+" weeks; normal terms are 14 days credit.</p>";
+  }
+  chips.forEach(function(c){c.addEventListener("click",function(){load(c.dataset.preset);});});
+  ids.forEach(function(i){el[i].addEventListener("input",function(){chips.forEach(function(c){c.setAttribute("aria-pressed","false");});render();});});
+  load("a");
+
+  document.getElementById("join").addEventListener("submit",function(e){
+    e.preventDefault();var v=document.getElementById("contact").value.trim();var m=document.getElementById("joinMsg");
+    if(!v){m.textContent="Enter a WhatsApp number or email to join.";return;}
+    m.textContent="You’re on the list. We’ll message you when your batch opens.";e.target.reset();
+  });
+})();
+</script>
+</body>
+</html>
