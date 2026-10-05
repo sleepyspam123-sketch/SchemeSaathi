@@ -4,7 +4,7 @@
 // GET:  returns the live numbers for the page ("schemes checked", "extra cash flagged").
 // Keys live ONLY in Vercel environment variables: GEMINI_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
 
-const MODEL = "gemini-2.5-flash-lite";
+const MODEL = "gemini-3.1-flash-lite";
 const TABLE = "scheme_checks";
 const MAX_PER_VISITOR = 5;
 const MAX_INPUT_CHARS = 600;
