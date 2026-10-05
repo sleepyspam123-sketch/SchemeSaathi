@@ -533,5 +533,153 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   });
 })();
 </script>
+<!-- ===== SchemeSaathi live AI check (Task 4) ===== -->
+<section id="live-check" class="ss-live">
+  <h2>Try it with one scheme from this week</h2>
+  <p class="ss-sub">Paste the scheme exactly as the salesman sent it. Our AI reads it, plain code does the maths, and you get a quantity and a verdict.</p>
+
+  <div class="ss-bill">
+    <label for="ss-scheme">Scheme message</label>
+    <textarea id="ss-scheme" rows="4" maxlength="600"
+      placeholder="e.g. Parle-G Rs 5 pack, 1 case = 144 pc, case rate Rs 612, scheme 10+1 free, 2% CD on cash"></textarea>
+
+    <div class="ss-row">
+      <div>
+        <label for="ss-cases">I usually buy (cases)</label>
+        <input id="ss-cases" type="number" min="1" max="500" value="4">
+      </div>
+      <div>
+        <label for="ss-weeks">They last (weeks)</label>
+        <input id="ss-weeks" type="number" min="1" max="52" value="2">
+      </div>
+    </div>
+
+    <div class="ss-examples">
+      <span>Try an example:</span>
+      <button type="button" data-ex="a">Fast shop</button>
+      <button type="button" data-ex="b">Slow shop</button>
+      <button type="button" data-ex="c">Confusing scheme</button>
+    </div>
+
+    <button id="ss-go" class="ss-go" type="button">Kitna lena hai? Check it</button>
+    <p id="ss-left" class="ss-small"></p>
+  </div>
+
+  <div id="ss-result" class="ss-result" aria-live="polite"></div>
+
+  <p class="ss-stats">
+    Live from our database: <strong id="ss-count">…</strong> schemes checked so far, and
+    <strong id="ss-flagged">…</strong> of extra cash flagged that shops didn't need to lock up.
+  </p>
+</section>
+
+<style>
+  .ss-live { max-width: 720px; margin: 48px auto; padding: 0 16px; color: #1f2a5a; font-family: "Hind", system-ui, sans-serif; }
+  .ss-live h2 { font-size: 1.6rem; margin: 0 0 6px; }
+  .ss-sub { margin: 0 0 18px; line-height: 1.5; }
+  .ss-bill { background: #fffdf6; border-left: 3px solid #c0392b; padding: 18px;
+             background-image: repeating-linear-gradient(transparent 0 27px, #dfe6f3 27px 28px); }
+  .ss-bill label { display: block; font-weight: 600; margin: 10px 0 4px; }
+  .ss-bill textarea, .ss-bill input { width: 100%; box-sizing: border-box; padding: 10px; font: inherit;
+             font-family: "Kalam", cursive; font-size: 1.05rem; color: #1f2a5a; border: 1px solid #b9c3d9; background: #fff; }
+  .ss-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ss-examples { margin: 14px 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ss-examples button { font: inherit; padding: 6px 12px; border: 1px dashed #1f2a5a; background: transparent; color: #1f2a5a; cursor: pointer; }
+  .ss-go { font: inherit; font-weight: 700; font-size: 1.05rem; padding: 12px 20px; border: 0; background: #e9a23b; color: #1f2a5a; cursor: pointer; width: 100%; }
+  .ss-go:disabled { opacity: .6; cursor: wait; }
+  .ss-live button:focus-visible, .ss-live textarea:focus-visible, .ss-live input:focus-visible { outline: 3px solid #1f2a5a; outline-offset: 2px; }
+  .ss-small { font-size: .9rem; margin: 8px 0 0; }
+  .ss-result { margin-top: 20px; }
+  .ss-receipt { border: 1px solid #b9c3d9; background: #fff; padding: 16px; }
+  .ss-receipt table { width: 100%; border-collapse: collapse; }
+  .ss-receipt td { padding: 6px 0; border-bottom: 1px dotted #b9c3d9; }
+  .ss-receipt td:last-child { text-align: right; font-weight: 600; }
+  .ss-stamp { display: inline-block; margin: 14px 0 8px; padding: 6px 14px; font-family: "Kalam", cursive; font-size: 1.2rem;
+              border: 3px solid currentColor; transform: rotate(-3deg); }
+  .ss-take { color: #2e7d32; } .ss-maybe { color: #b26a00; } .ss-skip { color: #c0392b; }
+  .ss-note { padding: 14px; border: 1px solid #b9c3d9; background: #fff; }
+  .ss-stats { margin-top: 18px; padding-top: 12px; border-top: 2px solid #e9a23b; }
+  @media (max-width: 420px) { .ss-row { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+(function () {
+  var vid = localStorage.getItem("ss_vid");
+  if (!vid) { vid = "v_" + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("ss_vid", vid); }
+
+  var examples = {
+    a: { s: "Parle-G Rs 5 pack, 1 case = 144 pc, case rate Rs 612, scheme 10+1 free, 2% CD on cash", c: 4, w: 2 },
+    b: { s: "Parle-G Rs 5 pack, 1 case = 144 pc, case rate Rs 612, scheme 10+1 free, 2% CD on cash", c: 4, w: 6 },
+    c: { s: "Surf Excel 1kg, case rate 1150, Rs 15 off per case above 5 cases", c: 3, w: 3 }
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; };
+
+  document.querySelectorAll(".ss-examples button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var e = examples[b.dataset.ex];
+      $("ss-scheme").value = e.s; $("ss-cases").value = e.c; $("ss-weeks").value = e.w;
+    });
+  });
+
+  function showStats(s) {
+    if (!s) return;
+    $("ss-count").textContent = s.schemes_checked.toLocaleString("en-IN");
+    $("ss-flagged").textContent = "Rs " + s.excess_cash_flagged.toLocaleString("en-IN");
+  }
+
+  fetch("/api/check").then(function (r) { return r.json(); }).then(showStats).catch(function () {});
+
+  $("ss-go").addEventListener("click", async function () {
+    var btn = $("ss-go"), out = $("ss-result");
+    btn.disabled = true; btn.textContent = "Checking…"; out.innerHTML = "";
+    try {
+      var r = await fetch("/api/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scheme: $("ss-scheme").value,
+          usual_cases: $("ss-cases").value,
+          usual_weeks: $("ss-weeks").value,
+          visitor_id: vid
+        })
+      });
+      var d = await r.json();
+      if (!r.ok) { out.innerHTML = '<div class="ss-note">' + esc(d.error || "Something went wrong.") + "</div>"; return; }
+
+      if (d.type === "answer") {
+        var n = d.numbers;
+        var stampText = { take: "Le lo, cash do", maybe: "Soch ke lo", skip: "Ruko, usual hi lo" }[d.verdict];
+        out.innerHTML =
+          '<div class="ss-receipt">' +
+          '<table>' +
+          "<tr><td>Cost per pack, normal</td><td>" + esc(n.cost_per_pack_normal) + "</td></tr>" +
+          "<tr><td>Cost per pack, with scheme</td><td>" + esc(n.cost_per_pack_scheme) + "</td></tr>" +
+          "<tr><td>Scheme deal</td><td>Pay for " + n.pay_for_cases + ", get " + n.get_cases + "</td></tr>" +
+          "<tr><td>Cash to pay now</td><td>" + esc(n.cash_to_pay_now) + "</td></tr>" +
+          "<tr><td>Stock will last</td><td>about " + n.weeks_of_stock + " weeks</td></tr>" +
+          "<tr><td>Extra cash locked up</td><td>" + esc(n.extra_cash_locked) + "</td></tr>" +
+          "<tr><td>Total saving from scheme</td><td>" + esc(n.total_saving) + "</td></tr>" +
+          "</table>" +
+          '<div class="ss-stamp ss-' + d.verdict + '">' + stampText + "</div>" +
+          "<p><strong>" + esc(n.verdict) + "</strong></p>" +
+          "<p>" + esc(d.explanation) + "</p>" +
+          '<p class="ss-small">Numbers are calculated by code, not by AI. Illustrative demo, check before you buy.</p>' +
+          "</div>";
+      } else {
+        out.innerHTML = '<div class="ss-note">' + esc(d.message) + "</div>";
+      }
+      showStats(d.stats);
+      if (typeof d.checks_left === "number") $("ss-left").textContent = d.checks_left + " free checks left in this demo.";
+    } catch (e) {
+      out.innerHTML = '<div class="ss-note">Could not reach SchemeSaathi. Check your internet and try again.</div>';
+    } finally {
+      btn.disabled = false; btn.textContent = "Kitna lena hai? Check it";
+    }
+  });
+})();
+</script>
+<!-- ===== end of SchemeSaathi live AI check ===== -->
 </body>
 </html>
